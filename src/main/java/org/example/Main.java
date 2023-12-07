@@ -11,6 +11,7 @@ public class Main {
     InputStreamReader isr;
     Map<String, Customer> customerRecord;
     RBI rbi;
+    String[] bankType;
     boolean isAccountCreation;
 
     public Main() {
@@ -20,8 +21,8 @@ public class Main {
             buff = new BufferedReader(isr);
         if(customerRecord == null)
             customerRecord = new HashMap<>();
-        if(rbi == null){
-            rbi = new RBI();
+        if(bankType == null){
+            bankType = new String[]{"ICICI", "HDFC", "SBI", "Axis", "IDFC"};
         }
         isAccountCreation = false;
     }
@@ -42,7 +43,7 @@ public class Main {
                 System.out.println("Enter the amount you want to deposit: ");
                 try{
                     depositedAmount = Float.parseFloat(buff.readLine());
-                    rbi.depositMoney(cust, depositedAmount, isAccountCreation);
+                    rbi.depositMoney(cust, depositedAmount);
                 }
                 catch (IOException e){
                     e.printStackTrace();
@@ -83,34 +84,32 @@ public class Main {
             e.printStackTrace();
         }
     }
+    public void loan(){
+        System.out.println("Enter your Aadhar Number: ");
+        try{
+            String aadhar = buff.readLine();
+            if(isCustomerPresent(aadhar)){
+                rbi.applyLoan(buff, customerRecord.get(aadhar));
+            }
+            else{
+                System.out.println("Sorry, your account is not registered.");
+            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 
     public void createAccount(){
-        Customer cust = new Customer();
-        isAccountCreation = true;
         System.out.println("Enter your Aadhar Number: ");
         try{
             String aadhar = buff.readLine();
             if(!isCustomerPresent(aadhar)){
-                float amount;
-
-                System.out.println("Minimum amount required to open the account is " + rbi.getMinBalance());
-                System.out.println("Enter the amount you want to open your bank account with :");
-                try{
-                    amount = Float.parseFloat(buff.readLine());
-                    rbi.depositMoney(cust, amount, isAccountCreation);
-                    if(isAccountCreation){
-                       System.out.println("Your account is successfully created.");
-                       customerRecord.put(aadhar, cust);
-                       isAccountCreation = false;
-                    }
-                }
-                catch(IOException e){
-                    e.printStackTrace();
-                }
-
+                customerRecord.put(aadhar,rbi.createAccount(buff, aadhar));
+                System.out.println("Your account is successfully created\nThank you!");
             }
             else{
-                System.out.println("Sorry, your account is already registered.");
+                System.out.println("Sorry, your account is already present.");
             }
         }
         catch (IOException e){
@@ -122,15 +121,19 @@ public class Main {
 
     public static void main(String[] args) {
         Main obj = new Main();
-        System.out.println("Welcome to IBS\nPlease select your bank\n1. ICICI\n2. HDFC\n3. SBI\n4. AXIS\n5. IDFC");
-
-        try {
-            obj.selectedBank = Integer.parseInt(obj.buff.readLine());
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        do{
+           System.out.println("Welcome to IBS\nPlease select your bank\n1. ICICI\n2. HDFC\n3. SBI\n4. AXIS\n5. IDFC");
+           try {
+                obj.selectedBank = Integer.parseInt(obj.buff.readLine());
+           }
+           catch (IOException e) {
+                e.printStackTrace();
+           }
+        }while(obj.selectedBank < 1 && obj.selectedBank > 5);
         System.out.println("Customer Selected " + obj.selectedBank);
+        switch(obj.selectedBank){
+            case 1: obj.rbi = new HDFC(); break;
+        }
 
         while(true){
             System.out.println("Select your choice\n1. Deposit\n2. Withdrawl\n3. OpenFD\n4. Apply Loan\n5. Apply CC\n6. Create Account");
@@ -147,6 +150,8 @@ public class Main {
 
                 case 2:
                     obj.withdrawl(); break;
+                case 4:
+                    obj.loan(); break;
                 case 6:
                     obj.createAccount(); break;
                 default:
