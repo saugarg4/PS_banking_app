@@ -2,8 +2,24 @@ package org.example;
 public class RBI {
     private float minBalance;
 
-    public void depositMoney(Customer obj, float amount) {
-        if(amount > 0){
+    public RBI(){
+        minBalance = 1000;
+    }
+
+    public void depositMoney(Customer obj, float amount, boolean isAccountCreation) {
+        if(isAccountCreation){
+            if(amount >= minBalance){
+                obj.setBalance(obj.getBalance() + amount);
+                System.out.println("Your account is successfully created");
+            }
+            else{
+                System.out.println("Sorry, minimum amount required to open the account is " + minBalance);
+                isAccountCreation = false;
+                return;
+            }
+        }
+
+        else if(amount > 0){
             obj.setBalance(obj.getBalance() + amount);
             System.out.println("Your amount is successfully added");
         }
@@ -18,7 +34,6 @@ public class RBI {
             float currentBalance = obj.getBalance();
             if(currentBalance - amount >= minBalance){
                 obj.setBalance(currentBalance - amount);
-                System.out.println("Your current amount is " + obj.getBalance());
             }
             else{
                 System.out.println("There has to be minBalance of " + minBalance);
@@ -46,7 +61,7 @@ public class RBI {
     }
     public void applyLoan(String loanType, float amount, float ROI, int years) {}
     public void applyCreditCard() {}
-    public float getBalance() {
-        return 0.0f;
+    public float getMinBalance() {
+        return minBalance;
     }
 }

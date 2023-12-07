@@ -10,6 +10,8 @@ public class Main {
     BufferedReader buff;
     InputStreamReader isr;
     Map<String, Customer> customerRecord;
+    RBI rbi;
+    boolean isAccountCreation;
 
     public Main() {
         if(isr == null)
@@ -18,6 +20,10 @@ public class Main {
             buff = new BufferedReader(isr);
         if(customerRecord == null)
             customerRecord = new HashMap<>();
+        if(rbi == null){
+            rbi = new RBI();
+        }
+        isAccountCreation = false;
     }
 
     int selectedBank, selectedOperation;
@@ -32,12 +38,11 @@ public class Main {
             String aadhar = buff.readLine();
             if(isCustomerPresent(aadhar)){
                 Customer cust = customerRecord.get(aadhar);
-                RBI rb = new RBI();
                 float depositedAmount;
                 System.out.println("Enter the amount you want to deposit: ");
                 try{
                     depositedAmount = Float.parseFloat(buff.readLine());
-                    rb.depositMoney(cust, depositedAmount);
+                    rbi.depositMoney(cust, depositedAmount, isAccountCreation);
                 }
                 catch (IOException e){
                     e.printStackTrace();
@@ -59,12 +64,11 @@ public class Main {
             String aadhar = buff.readLine();
             if(isCustomerPresent(aadhar)){
                 Customer cust = customerRecord.get(aadhar);
-                RBI rb = new RBI();
                 float withdrawlAmount;
-                System.out.println("Enter the amount you want to deposit: ");
+                System.out.println("Enter the amount you want to withdraw: ");
                 try{
                     withdrawlAmount = Float.parseFloat(buff.readLine());
-                    rb.withdrawMoney(cust, withdrawlAmount);
+                    rbi.withdrawMoney(cust, withdrawlAmount);
                 }
                 catch (IOException e){
                     e.printStackTrace();
@@ -82,21 +86,23 @@ public class Main {
 
     public void createAccount(){
         Customer cust = new Customer();
+        isAccountCreation = true;
         System.out.println("Enter your Aadhar Number: ");
         try{
             String aadhar = buff.readLine();
             if(!isCustomerPresent(aadhar)){
-                RBI rbi = new RBI();
-
                 float amount;
 
-                System.out.println("Minimum amount required to open the account is " + rbi.getBalance());
+                System.out.println("Minimum amount required to open the account is " + rbi.getMinBalance());
                 System.out.println("Enter the amount you want to open your bank account with :");
                 try{
                     amount = Float.parseFloat(buff.readLine());
-                    rbi.depositMoney(cust, amount);
-                    System.out.println("Your account is successfully created.");
-                    customerRecord.put(aadhar, cust);
+                    rbi.depositMoney(cust, amount, isAccountCreation);
+                    if(isAccountCreation){
+                       System.out.println("Your account is successfully created.");
+                       customerRecord.put(aadhar, cust);
+                       isAccountCreation = false;
+                    }
                 }
                 catch(IOException e){
                     e.printStackTrace();
