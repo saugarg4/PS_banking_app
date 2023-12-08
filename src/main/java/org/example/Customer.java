@@ -2,19 +2,19 @@ package org.example;
 
 public class Customer {
     private String customerName, customerEmail, customerAddress, customerGender, customerAadhar, customerPhone;
-    private float balance;
+
 
     public Customer() {
     }
 
-    public Customer(String customerName, String customerEmail, String customerAddress, String customerGender, String customerAadhar, String customerPhone, float balance) {
+    public Customer(String customerName, String customerEmail, String customerAddress, String customerGender, String customerAadhar, String customerPhone) {
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.customerAddress = customerAddress;
         this.customerGender = customerGender;
         this.customerAadhar = customerAadhar;
         this.customerPhone = customerPhone;
-        this.balance = balance;
+
     }
 
     public String getCustomerName() {
@@ -65,11 +65,4 @@ public class Customer {
         this.customerPhone = customerPhone;
     }
 
-    public float getBalance() {
-        return balance;
-    }
-
-    public void setBalance(float balance) {
-        this.balance = balance;
-    }
 }

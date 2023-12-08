@@ -3,47 +3,54 @@ package org.example;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Main {
 
+public class Main extends Thread {
     BufferedReader buff;
     InputStreamReader isr;
-    Map<String, Customer> customerRecord;
     RBI rbi;
     String[] bankType;
     boolean isAccountCreation;
+    boolean isUserContinue;
+    List<RBI> bankList;
 
     public Main() {
         if(isr == null)
             isr = new InputStreamReader(System.in);
         if(buff==null)
             buff = new BufferedReader(isr);
-        if(customerRecord == null)
-            customerRecord = new HashMap<>();
         if(bankType == null){
             bankType = new String[]{"ICICI", "HDFC", "SBI", "Axis", "IDFC"};
         }
         isAccountCreation = false;
+        if(bankList == null){
+            bankList = new ArrayList<>();
+            bankList.add(new ICICI());
+            bankList.add(new HDFC());
+            bankList.add(new SBI());
+            bankList.add(new Axis());
+            bankList.add(new IDFC());
+
+        }
     }
 
     int selectedBank, selectedOperation;
 
-    public boolean isCustomerPresent(String aadhar){
-        return customerRecord.containsKey(aadhar);
-    }
+
 
     public void deposit(){
         System.out.println("Enter your Aadhar Number");
         try{
             String aadhar = buff.readLine();
-            if(isCustomerPresent(aadhar)){
-                Customer cust = customerRecord.get(aadhar);
+            Account account = rbi.getAccount(aadhar);
+            if(account != null){
                 float depositedAmount;
                 System.out.println("Enter the amount you want to deposit: ");
                 try{
                     depositedAmount = Float.parseFloat(buff.readLine());
-                    rbi.depositMoney(cust, depositedAmount);
+                    rbi.depositMoney(account, depositedAmount);
                 }
                 catch (IOException e){
                     e.printStackTrace();
@@ -63,13 +70,13 @@ public class Main {
         System.out.println("Enter your Aadhar Number: ");
         try{
             String aadhar = buff.readLine();
-            if(isCustomerPresent(aadhar)){
-                Customer cust = customerRecord.get(aadhar);
+            Account account = rbi.getAccount(aadhar);
+            if(account != null){
                 float withdrawlAmount;
                 System.out.println("Enter the amount you want to withdraw: ");
                 try{
                     withdrawlAmount = Float.parseFloat(buff.readLine());
-                    rbi.withdrawMoney(cust, withdrawlAmount);
+                    rbi.withdrawMoney(account, withdrawlAmount);
                 }
                 catch (IOException e){
                     e.printStackTrace();
@@ -88,8 +95,26 @@ public class Main {
         System.out.println("Enter your Aadhar Number: ");
         try{
             String aadhar = buff.readLine();
-            if(isCustomerPresent(aadhar)){
-                rbi.applyLoan(buff, customerRecord.get(aadhar));
+            Account account = rbi.getAccount(aadhar);
+            if(account != null){
+                rbi.applyLoan(buff, account);
+            }
+            else{
+                System.out.println("Sorry, your account is not registered.");
+            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void createCreditCard(){
+        System.out.println("Enter your Aadhar Number: ");
+        try{
+            String aadhar = buff.readLine();
+            Account account = rbi.getAccount(aadhar);
+            if(account != null){
+                rbi.applyCreditCard(buff, account);
             }
             else{
                 System.out.println("Sorry, your account is not registered.");
@@ -104,9 +129,9 @@ public class Main {
         System.out.println("Enter your Aadhar Number: ");
         try{
             String aadhar = buff.readLine();
-            if(!isCustomerPresent(aadhar)){
-                customerRecord.put(aadhar,rbi.createAccount(buff, aadhar));
-                System.out.println("Your account is successfully created\nThank you!");
+            Account account = rbi.getAccount(aadhar);
+            if(account == null){
+                rbi.createBankAccount(buff, aadhar);
             }
             else{
                 System.out.println("Sorry, your account is already present.");
@@ -118,47 +143,99 @@ public class Main {
 
     }
 
+    public void openFD(){
+        System.out.println("Enter your Aadhar Number: ");
+        try{
+            String aadhar = buff.readLine();
+            Account account = rbi.getAccount(aadhar);
+            if(account != null){
+                rbi.openBankFD(buff, account);
+            }
+            else{
+                System.out.println("Sorry, your account is not registered.");
+            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void getAccountDetails(){
+        System.out.println("Enter your Aadhar Number: ");
+        try{
+            String aadhar = buff.readLine();
+            Account account = rbi.getAccount(aadhar);
+            if(account != null){
+                rbi.getAccountDetails(aadhar);
+            }
+            else{
+                System.out.println("Sorry, your account is not registered.");
+            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) {
         Main obj = new Main();
-        do{
-           System.out.println("Welcome to IBS\nPlease select your bank\n1. ICICI\n2. HDFC\n3. SBI\n4. AXIS\n5. IDFC");
-           try {
-                obj.selectedBank = Integer.parseInt(obj.buff.readLine());
-           }
-           catch (IOException e) {
-                e.printStackTrace();
-           }
-        }while(obj.selectedBank < 1 && obj.selectedBank > 5);
-        System.out.println("Customer Selected " + obj.selectedBank);
-        switch(obj.selectedBank){
-            case 1: obj.rbi = new HDFC(); break;
-        }
+        obj.start();
+    }
 
+
+    public void run(){
         while(true){
-            System.out.println("Select your choice\n1. Deposit\n2. Withdrawl\n3. OpenFD\n4. Apply Loan\n5. Apply CC\n6. Create Account");
-            try {
-                obj.selectedOperation = Integer.parseInt(obj.buff.readLine());
+
+            do{
+                System.out.println("Welcome to IBS\nPlease select your bank\n1. ICICI\n2. HDFC\n3. SBI\n4. AXIS\n5. IDFC");
+                try {
+                    selectedBank = Integer.parseInt(buff.readLine());
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }while(selectedBank < 1 && selectedBank > 5);
+            System.out.println("Account Selected " + selectedBank);
+
+            switch(selectedBank){
+                case 1: rbi = bankList.get(0); break;
+                case 2: rbi = bankList.get(1);break;
+                case 3: rbi = bankList.get(2); break;
+                case 4: rbi = bankList.get(3); break;
+                case 5: rbi = bankList.get(4); break;
             }
-            catch (IOException e) {
-                e.printStackTrace();
+            isUserContinue = true;
+            while(isUserContinue){
+                System.out.println("Select your choice\n1. Deposit\n2. Withdrawl\n3. OpenFD\n4. Apply Loan\n5. Apply CC\n6. Create Account\n7. Get Account Details\n8. Exit");
+                try {
+                    selectedOperation = Integer.parseInt(buff.readLine());
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Account Selected " + selectedOperation);
+                switch(selectedOperation){
+                    case 1:
+                        deposit(); break;
+                    case 2:
+                        withdrawl(); break;
+                    case 3:
+                        openFD(); break;
+                    case 4:
+                        loan(); break;
+                    case 5:
+                        createCreditCard();break;
+                    case 6:
+                        createAccount(); break;
+                    case 7:
+                        getAccountDetails(); break;
+                    case 8:
+                        isUserContinue = false; break;
+                    default:
+                        System.out.println("Please enter the correct option");
+                };
             }
-            System.out.println("Customer Selected " + obj.selectedOperation);
-            switch(obj.selectedOperation){
-                case 1:
-                    obj.deposit(); break;
-
-                case 2:
-                    obj.withdrawl(); break;
-                case 4:
-                    obj.loan(); break;
-                case 6:
-                    obj.createAccount(); break;
-                default:
-                    System.out.println("Please enter the correct option");
-            };
-        }
-
-
+       }
     }
 }
+

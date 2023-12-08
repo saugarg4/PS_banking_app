@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HDFC extends RBI{
+public class ICICI extends RBI{
 
     final String[] loanType = {"home", "education", "personal", "car"}; ;
     final float[] loanBankPercent = {5, 3, 6, 8};
@@ -14,7 +14,7 @@ public class HDFC extends RBI{
     final float ROI = 5;
     private Map<String, Account> customerAccountRecord;
     private float bankProfit;
-    public HDFC(){
+    public ICICI(){
         bankProfit = 0;
         if(customerAccountRecord == null)
             customerAccountRecord = new HashMap<>();
@@ -91,15 +91,15 @@ public class HDFC extends RBI{
                 System.out.println("Please, enter the correct time period");
             }
         } while (years <= 0);
-             float currAmount = FDAmount;
-            for(int i =1; i<=years; i++){
-                currAmount = currAmount*(1 + ROI/100);
-                System.out.println("Amount for " + i + " is: " + currAmount);
-            }
-            account.setFDAmount(account.getFDAmount() + currAmount);
-            float totalProfit = currAmount - FDAmount;
-            System.out.println("Total Profit: " + totalProfit);
+        float currAmount = FDAmount;
+        for(int i =1; i<=years; i++){
+            currAmount = currAmount*(1 + ROI/100);
+            System.out.println("Amount for " + i + " is: " + currAmount);
         }
+        account.setFDAmount(account.getFDAmount() + currAmount);
+        float totalProfit = currAmount - FDAmount;
+        System.out.println("Total Profit: " + totalProfit);
+    }
 
     public boolean isLoanApplicable(Account account){
         return account.getBalance() > (minBalance*2) && (account.getLoanType() == -1) ;
@@ -145,20 +145,20 @@ public class HDFC extends RBI{
                 }
             } while (years <= 0);
             float loanInterest = 0;
-          for(int i =1; i<= years; i++){
-              amount += loanInterest;
-            loanInterest = amount * loanBankPercent[loanType - 1] * i / 100;
-            totalProfit += loanInterest * loanPercent / 100;
-            bankProfit += loanInterest*(loanBankPercent[loanType - 1] - loanPercent)/100;
-            System.out.println("Your loan interest amount for " + i + " year will be " + loanInterest);
+            for(int i =1; i<= years; i++){
+                amount += loanInterest;
+                loanInterest = amount * loanBankPercent[loanType - 1] * i / 100;
+                totalProfit += loanInterest * loanPercent / 100;
+                bankProfit += loanInterest*(loanBankPercent[loanType - 1] - loanPercent)/100;
+                System.out.println("Your loan interest amount for " + i + " year will be " + loanInterest);
 
-          }
-          account.setLoanType(loanType -1);
-          account.setLoanAmount(amount);
+            }
+            account.setLoanType(loanType -1);
+            account.setLoanAmount(amount);
             System.out.println("Total amount to be paid is " + amount);
         }
         else{
-             System.out.println("Sorry, your balance is not sufficient to grant you a loan");
+            System.out.println("Sorry, your balance is not sufficient to grant you a loan");
         }
     }
     public void createBankAccount(BufferedReader buff, String aadhar){
@@ -169,16 +169,16 @@ public class HDFC extends RBI{
             System.out.println("Minimum amount required to open the account is " + minBalance);
             System.out.println("Enter the amount you want to open your bank account with :");
             try{
-               amount = Float.parseFloat(buff.readLine());
-               if(amount > minBalance){
-                  account.setBalance(amount);
-                   System.out.println("Your account is successfully created.");
-               }
-               else{
-                   System.out.println("Please, enter the valid amount");
-               }
+                amount = Float.parseFloat(buff.readLine());
+                if(amount > minBalance){
+                    account.setBalance(amount);
+                    System.out.println("Your account is successfully created.");
+                }
+                else{
+                    System.out.println("Please, enter the valid amount");
+                }
             } catch(IOException e){
-                   e.printStackTrace();
+                e.printStackTrace();
             }
 
         }while(amount <= minBalance);
@@ -214,7 +214,7 @@ public class HDFC extends RBI{
             System.out.println("Sorry, your balance is not sufficient to grant you a credit card");
         }
     }
-    
+
     public void getAccountDetails(String aadhar){
         Account account = getAccount(aadhar);
         System.out.println("Customer aadhar number: " + account.customer.getCustomerAadhar());
@@ -226,7 +226,7 @@ public class HDFC extends RBI{
         }
         System.out.println("Customer Credit card max limit: " + account.getCreditCardMaxLimit());
 
-        
+
     }
     public float getMinBalance() {
         return minBalance;
