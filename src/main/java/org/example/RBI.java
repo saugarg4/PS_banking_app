@@ -16,5 +16,5 @@ public abstract class RBI {
     public abstract void applyLoan(BufferedReader buff, Account account);
     public abstract void applyCreditCard(BufferedReader buff, Account account);
     public abstract float getMinBalance();
-    public abstract void createBankAccount(BufferedReader buff, String aadhar);
+    public abstract void createBankAccount(BufferedReader buff);
 }

@@ -161,16 +161,60 @@ public class IDFC extends RBI{
             System.out.println("Sorry, your balance is not sufficient to grant you a loan");
         }
     }
-    public void createBankAccount(BufferedReader buff, String aadhar){
-        Account account = new Account();
-        account.customer.setCustomerAadhar(aadhar);
+    public Customer customerDialog(BufferedReader buff) {
+        String line;
+        Customer customer = new Customer();
+        try {
+            System.out.print("Enter your name: ");
+            do {
+                line = buff.readLine();
+            } while (line.length() == 0);
+            customer.setCustomerName(line.toLowerCase().trim());
+            line = "";
+            System.out.print("Enter your aadhar number  : ");
+            do {
+                line = buff.readLine();
+            } while (line.length() == 0);
+            customer.setCustomerAadhar(line);
+            line = "";
+            System.out.print("Enter your email id  : ");
+            do {
+                line = buff.readLine();
+            } while (line.length() == 0);
+            customer.setCustomerEmail(line);
+            line = "";
+            System.out.print("Enter your address: ");
+            do {
+                line = buff.readLine();
+            } while (line.length() == 0);
+            customer.setCustomerAddress(line);
+            line = "";
+            System.out.print("Enter your gender: ");
+            do {
+                line = buff.readLine();
+            } while (line.length() == 0);
+            customer.setCustomerGender(line);
+            line = "";
+            System.out.print("Enter your phone number: ");
+            do {
+                line = buff.readLine();
+            } while (line.length() == 0);
+            customer.setCustomerPhone(line);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return customer;
+    }
+    public void createBankAccount(BufferedReader buff){
+        Account account = new Account(customerDialog(buff));
         float amount = 0;
         do{
             System.out.println("Minimum amount required to open the account is " + minBalance);
             System.out.println("Enter the amount you want to open your bank account with :");
             try{
                 amount = Float.parseFloat(buff.readLine());
-                if(amount > minBalance){
+                if(amount >= minBalance){
                     account.setBalance(amount);
                     System.out.println("Your account is successfully created.");
                 }
@@ -181,9 +225,9 @@ public class IDFC extends RBI{
                 e.printStackTrace();
             }
 
-        }while(amount <= minBalance);
+        }while(amount < minBalance);
 
-        setCustomerAccount(aadhar, account);
+        setCustomerAccount(account.getCustomer().getCustomerAadhar(), account);
 
     }
     public void applyCreditCard(BufferedReader buff, Account account) {
@@ -217,7 +261,14 @@ public class IDFC extends RBI{
 
     public void getAccountDetails(String aadhar){
         Account account = getAccount(aadhar);
-        System.out.println("Customer aadhar number: " + account.customer.getCustomerAadhar());
+        System.out.println("Customer name: " + account.getCustomer());
+        System.out.println("Customer aadhar number: " + account.getCustomer().getCustomerAadhar());
+        System.out.println("Customer email : " + account.getCustomer().getCustomerEmail());
+        System.out.println("Customer Address: " + account.getCustomer().getCustomerAddress());
+        System.out.println("Customer name: " + account.getCustomer().getCustomerName());
+        System.out.println("Customer Gender: " + account.getCustomer().getCustomerGender());
+        System.out.println("Customer Phone Number: " + account.getCustomer().getCustomerPhone());
+
         System.out.println("Customer balanace: " + account.getBalance());
         System.out.println("Customer FDAmount: " + account.getFDAmount());
         if(account.getLoanType() > -1){

@@ -131,7 +131,7 @@ public class Main extends Thread {
             String aadhar = buff.readLine();
             Account account = rbi.getAccount(aadhar);
             if(account == null){
-                rbi.createBankAccount(buff, aadhar);
+                rbi.createBankAccount(buff);
             }
             else{
                 System.out.println("Sorry, your account is already present.");

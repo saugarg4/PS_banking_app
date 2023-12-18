@@ -6,6 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="d6e633b6-0d2c-4265-b426-e6fe35075dd2" name="Changes" comment="Establish a connection between client and server and write testcases for HDFC class">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Axis.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Axis.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/HDFC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/HDFC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ICICI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ICICI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/IDFC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/IDFC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/RBI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/RBI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/SBI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/SBI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,13 +65,27 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/saugarg4/IdeaProjects/airline-ticketing-system&quot;,
     &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/saugarg4/IdeaProjects/banking_app_187035/src/main/java/org/example/Main.java&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.ClientClass">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="ClientClass" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.ClientClass" />
+      <module name="banking_app_187035" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.example.Main" />
       <module name="banking_app_187035" />
       <extension name="coverage">
         <pattern>
@@ -90,6 +112,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.ClientClass" />
         <item itemvalue="Application.ServerClass" />
       </list>

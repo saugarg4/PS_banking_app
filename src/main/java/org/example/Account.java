@@ -1,7 +1,7 @@
 package org.example;
 
 public class Account {
-    Customer customer;
+    private Customer customer;
     private float balance;
     private float FDAmount;
     private float loanAmount;
@@ -21,6 +21,16 @@ public class Account {
         customer = new Customer(customerName,customerEmail,customerAddress, customerGender,customerAadhar,customerPhone);
         this.balance = balance;
 
+    }
+    public Account(Customer customer){
+        this.customer = customer;
+    }
+    public void setCustomer(Customer customer){
+        this.customer = customer;
+    }
+
+    public Customer getCustomer(){
+        return customer;
     }
 
     public float getBalance() {
