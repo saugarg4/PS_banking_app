@@ -5,12 +5,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class Main extends Thread {
     BufferedReader buff;
     InputStreamReader isr;
     RBI rbi;
+    final Logger log;
     String[] bankType;
     boolean isAccountCreation;
     boolean isUserContinue;
@@ -34,6 +37,7 @@ public class Main extends Thread {
             bankList.add(new IDFC());
 
         }
+        log = Logging.getInstance().getLog();
     }
 
     int selectedBank, selectedOperation;
@@ -58,7 +62,7 @@ public class Main extends Thread {
 
             }
             else{
-                System.out.println("Sorry, your account is not registered.");
+                log.log(Level.WARNING, "Sorry, your account is not registered.");
             }
         }
         catch (IOException e){
@@ -84,7 +88,7 @@ public class Main extends Thread {
 
             }
             else{
-                System.out.println("Sorry, your account is not registered.");
+                log.log(Level.WARNING, "Sorry, your account is not registered.");
             }
         }
         catch (IOException e){
@@ -100,7 +104,7 @@ public class Main extends Thread {
                 rbi.applyLoan(buff, account);
             }
             else{
-                System.out.println("Sorry, your account is not registered.");
+                log.log(Level.WARNING, "Sorry, your account is not registered.");
             }
         }
         catch (IOException e){
@@ -117,7 +121,7 @@ public class Main extends Thread {
                 rbi.applyCreditCard(buff, account);
             }
             else{
-                System.out.println("Sorry, your account is not registered.");
+                log.log(Level.WARNING, "Sorry, your account is not registered.");
             }
         }
         catch (IOException e){
@@ -134,7 +138,7 @@ public class Main extends Thread {
                 rbi.createBankAccount(buff);
             }
             else{
-                System.out.println("Sorry, your account is already present.");
+                log.log(Level.WARNING, "Sorry, your account is not registered.");
             }
         }
         catch (IOException e){
@@ -152,7 +156,7 @@ public class Main extends Thread {
                 rbi.openBankFD(buff, account);
             }
             else{
-                System.out.println("Sorry, your account is not registered.");
+                log.log(Level.WARNING, "Sorry, your account is not registered.");
             }
         }
         catch (IOException e){
@@ -169,7 +173,7 @@ public class Main extends Thread {
                 rbi.getAccountDetails(aadhar);
             }
             else{
-                System.out.println("Sorry, your account is not registered.");
+                log.log(Level.WARNING, "Sorry, your account is not registered.");
             }
         }
         catch (IOException e){

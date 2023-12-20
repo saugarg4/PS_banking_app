@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HDFC extends RBI{
 
@@ -12,12 +14,14 @@ public class HDFC extends RBI{
     final float creditCardBankPercent = 2;
     final float minBalance = 1000;
     final float ROI = 5;
+    final Logger log;
     private Map<String, Account> customerAccountRecord;
     private float bankProfit;
     public HDFC(){
         bankProfit = 0;
         if(customerAccountRecord == null)
             customerAccountRecord = new HashMap<>();
+        log = Logging.getInstance().getLog();
     }
 
     public boolean isAccountPresent(String aadhar){
@@ -38,10 +42,10 @@ public class HDFC extends RBI{
     public void depositMoney(Account account, float amount) {
         if(amount > 0){
             account.setBalance(account.getBalance() + amount);
-            System.out.println("Your amount is successfully added");
+            log.log(Level.INFO,"Your amount is successfully added");
         }
         else{
-            System.out.println("The depositing amount cannot be negative or Zero");
+            log.log(Level.WARNING, "The depositing amount cannot be negative or Zero");
         }
         System.out.println("Net balance: " + account.getBalance());
     }
@@ -57,7 +61,7 @@ public class HDFC extends RBI{
             }
         }
         else{
-            System.out.println("The withdrawing amount cannot be negative or Zero");
+            log.log(Level.WARNING, "The withdrawing amount cannot be negative or Zero");
         }
         System.out.println("Net balance: " + account.getBalance());
     }
@@ -158,7 +162,7 @@ public class HDFC extends RBI{
             System.out.println("Total amount to be paid is " + amount);
         }
         else{
-             System.out.println("Sorry, your balance is not sufficient to grant you a loan");
+            log.log(Level.WARNING, "Sorry, your balance is not sufficient to grant you a loan");
         }
     }
     public Customer customerDialog(BufferedReader buff) {
@@ -216,10 +220,11 @@ public class HDFC extends RBI{
                amount = Float.parseFloat(buff.readLine());
                if(amount >= minBalance){
                   account.setBalance(amount);
-                   System.out.println("Your account is successfully created.");
+                   log.log(Level.INFO, "Your account is successfully created.");
                }
                else{
-                   System.out.println("Please, enter the valid amount");
+                   log.log(Level.WARNING, "Please, enter the valid amount");
+
                }
             } catch(IOException e){
                    e.printStackTrace();
@@ -247,7 +252,7 @@ public class HDFC extends RBI{
             float creditServiceCharge = account.getBalance() * creditCardBankPercent / 100;
             totalProfit += account.getBalance() * creditCardPercent  / 100;
             bankProfit += account.getBalance() * (creditCardBankPercent - creditCardPercent)/100;
-            System.out.println("Your credit card is issued\nThank you");
+            log.log(Level.INFO, "Your credit card is issued\nThank you");
             System.out.println("Service charges to be paid is " + creditServiceCharge);
             account.setBalance(account.getBalance() - creditServiceCharge);
             account.setCreditCardMaxLimit(creditLimit);
@@ -255,7 +260,7 @@ public class HDFC extends RBI{
 
         }
         else{
-            System.out.println("Sorry, your balance is not sufficient to grant you a credit card");
+            log.log(Level.WARNING, "Sorry, your balance is not sufficient to grant you a credit card");
         }
     }
     
